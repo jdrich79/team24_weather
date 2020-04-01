@@ -22,8 +22,34 @@ public class Activity {
 		return bestWindSpeed;
 	}
 
-	public Activity() {
-
+	public void sailing() {
+		this.bestTemp = 0;
+		this.bestPrecip = 0;
+		this.bestWindSpeed= 0;
+	}
+	
+	public void hiking() {
+		this.bestTemp = 0;
+		this.bestPrecip = 0;
+		this.bestWindSpeed= 0;
+	}
+	
+	public void climbing() {
+		this.bestTemp = 0;
+		this.bestPrecip = 0;
+		this.bestWindSpeed= 0;
+	}
+	
+	public void skiing() {
+		this.bestTemp = 0;
+		this.bestPrecip = 0;
+		this.bestWindSpeed= 0;
+	}
+	
+	public void biking() {
+		this.bestTemp = 0;
+		this.bestPrecip = 0;
+		this.bestWindSpeed= 0;
 	}
 	
 }

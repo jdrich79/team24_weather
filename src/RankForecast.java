@@ -1,3 +1,4 @@
+  
 import java.util.ArrayList;
 /**
  * This class is responsible for knowing forecasts, knowing activities, and ranking days/times by chosen activities
@@ -8,7 +9,15 @@ import java.util.ArrayList;
 public class RankForecast {
 	private ArrayList<String> rankedList = new ArrayList<String>();
 	
-	public RankForecast() {
-		
+	public ArrayList<String> getRankedList() {
+		return rankedList;
 	}
+	
+	public RankForecast(ArrayList<String> weatherList) {
+		this.rankedList = weatherList;
+	}
+
+	
+	
+	
 }
