@@ -55,13 +55,13 @@ public class NWSWeatherWebservice {
 	 * @return
 	 */
 	
-	public ArrayList<Weather> getNWSForecast(String coordinates){
+	public ArrayList<FiveDayForecast> getNWSForecast(String coordinates){
 		//make call to prescribed URL location
 		ArrayList<String> url = getNWSGridLocation(coordinates);
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest requestForecast = HttpRequest.newBuilder().uri(URI.create(url.get(0))).timeout(Duration.ofSeconds(5)).build();
 		HttpRequest requestForecastGridData = HttpRequest.newBuilder().uri(URI.create(url.get(1))).timeout(Duration.ofSeconds(5)).build();
-		ArrayList<Weather> weatherData = new ArrayList<Weather>();
+		ArrayList<FiveDayForecast> weatherData = new ArrayList<FiveDayForecast>();
 		jsonIO parseWeather = new jsonIO();
 		
 		try {
