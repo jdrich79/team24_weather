@@ -21,30 +21,46 @@ public class Activity {
 	public void sailing() {
 		this.bestHighTemp = 75;
 		this.bestLowTemp = 65;
-		this.temperatureUnit = ;
-		this.bestWindSpeed;
-		this.windDirection;
-		this.icon;
-		this.shortForecast;
-		this.longForecast;
-		this.bestProbabilityOfPrecip;
-		this.bestAmountOfPrecip;
+		//knots? mph?
+		this.bestWindSpeed = 13;
+		this.bestProbabilityOfPrecip = 0;
+		this.bestAmountOfPrecip = 0;
 	}
 	
 	public void hiking() {
-
+		this.bestHighTemp = 75;
+		this.bestLowTemp = 65;
+		//knots? mph?
+		this.bestWindSpeed = 13;
+		this.bestProbabilityOfPrecip = 0;
+		this.bestAmountOfPrecip = 0;
 	}
 	
 	public void climbing() {
-
+		this.bestHighTemp = 75;
+		this.bestLowTemp = 65;
+		//knots? mph?
+		this.bestWindSpeed = 13;
+		this.bestProbabilityOfPrecip = 0;
+		this.bestAmountOfPrecip = 0;
 	}
 	
 	public void skiing() {
-
+		this.bestHighTemp = 75;
+		this.bestLowTemp = 65;
+		//knots? mph?
+		this.bestWindSpeed = 13;
+		this.bestProbabilityOfPrecip = 0;
+		this.bestAmountOfPrecip = 0;
 	}
 	
 	public void biking() {
-
+		this.bestHighTemp = 75;
+		this.bestLowTemp = 65;
+		//knots? mph?
+		this.bestWindSpeed = 13;
+		this.bestProbabilityOfPrecip = 0;
+		this.bestAmountOfPrecip = 0;
 	}
 	
 }
