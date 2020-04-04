@@ -78,26 +78,10 @@ public class CallWUAPI {
          */
         
         JSONArray jADate = jObj.getJSONArray("validTimeLocal");  // collecting to parse out the date
-        //ArrayList<String> arLstDate = this.jArrayHelper(jADate);
-
         JSONArray jADayWeek = jObj.getJSONArray("dayOfWeek");
-        //ArrayList<String> arLstDoW = this.jArrayHelper(jADayWeek);
-
         JSONArray jANarrMain = jObj.getJSONArray("narrative");
-        //ArrayList<String> arLstNarM = this.jArrayHelper(jANarrMain);
-
-        JSONArray jAqpf = jObj.getJSONArray("qpf");
-        //ArrayList<String> arLstQpf = this.jArrayHelper(jAqpf);
-
-        JSONArray jASnow = jObj.getJSONArray("qpfSnow");
-        //ArrayList<String> arLstSnow = this.jArrayHelper(jASnow);
-
         JSONArray jATmpMax = jObj.getJSONArray("temperatureMax");
-        //ArrayList<String> arLstTMax = this.jArrayHelper(jATmpMax);
-
         JSONArray jATmpMin = jObj.getJSONArray("temperatureMin");
-        //ArrayList<String> arLstTMin = this.jArrayHelper(jATmpMin);
-
         
         /*
          * Day Parts - data is divided into two parts per day
@@ -107,41 +91,18 @@ public class CallWUAPI {
              *  'daypartObj' created to get data from a deeper level of JSON, 
              *  and to reduce amount of code needed to reach it 
              */
-        
-      
+
         JSONArray jADayPart = daypartObj.getJSONArray("daypartName");
-        //ArrayList<String> arLstDayPrt = this.jArrayHelper(jADayPart);
-        
         JSONArray jANarrDPart = daypartObj.getJSONArray("narrative");
-        //ArrayList<String> arLstNarDPrt = this.jArrayHelper(jANarrDPart);
-        
         JSONArray jAPrecipCh = daypartObj.getJSONArray("precipChance");
-        //ArrayList<String> arLstPreCh = this.jArrayHelper(jAPrecipCh);
-        
-        JSONArray jACloud = daypartObj.getJSONArray("cloudCover");  // ADDED
-        //ArrayList<String> arLstCloud = this.jArrayHelper(jACloud);
-        
-        JSONArray jAPrcpType = daypartObj.getJSONArray("precipType"); // ADDED
-        //ArrayList<String> arLstPreTyp = this.jArrayHelper(jAPrcpType);
-        
-        JSONArray jAQpfPrt = daypartObj.getJSONArray("qpf"); // ADDED
-        //ArrayList<String> arLstQpfPrt = this.jArrayHelper(jAQpfPrt);
-        
-        JSONArray jASnowPrt = daypartObj.getJSONArray("qpfSnow"); // ADDED
-        //ArrayList<String> arLstSnowPrt = this.jArrayHelper(jASnowPrt);
-        
-        JSONArray jASnowRange = daypartObj.getJSONArray("snowRange"); // ADDED
-        //ArrayList<String> arLstSnwRng = this.jArrayHelper(jASnowRange);
-        
-        JSONArray jAHeatIndex = daypartObj.getJSONArray("temperatureHeatIndex"); //ADDED
-        //ArrayList<String> arLstHtIdx = this.jArrayHelper(jAHeatIndex);
-        
-        JSONArray jAWindChill = daypartObj.getJSONArray("temperatureWindChill"); //ADDED
-        //ArrayList<String> arLstWndChl = this.jArrayHelper(jAWindChill);
-        
-        JSONArray jAWindPhrase = daypartObj.getJSONArray("windPhrase"); //ADDED
-        //ArrayList<String> arLstWndPhs = this.jArrayHelper(jAWindPhrase);
-        
+        JSONArray jACloud = daypartObj.getJSONArray("cloudCover");  
+        JSONArray jAPrcpType = daypartObj.getJSONArray("precipType");
+        JSONArray jAQpfPrt = daypartObj.getJSONArray("qpf"); 
+        JSONArray jASnowPrt = daypartObj.getJSONArray("qpfSnow"); 
+        JSONArray jAHeatIndex = daypartObj.getJSONArray("temperatureHeatIndex"); 
+        JSONArray jAWindChill = daypartObj.getJSONArray("temperatureWindChill"); 
+        JSONArray jAWindPhrase = daypartObj.getJSONArray("windPhrase"); 
+       
         
         /*
          * Begin the building of the ArrayList 'forecasts' of 'FiveDayForecast' objects
@@ -160,8 +121,6 @@ public class CallWUAPI {
             
             String dow = jADayWeek.getString(i);
             String nar = jANarrMain.getString(i);
-            Double qpf = jAqpf.getDouble(i);
-            Double snow = jASnow.getDouble(i);
             
             /*
              * Temperature max becomes 'null' after 3pm
@@ -198,8 +157,6 @@ public class CallWUAPI {
             Double qpfN = null;
             Double snowD = null;
             Double snowN = null;
-            String snowRngD = "";
-            String snowRngN = "";
             Integer heatIdxD = null;
             Integer heatIdxN = null;
             Integer windChlD = null;
@@ -263,12 +220,7 @@ public class CallWUAPI {
                 else {snowD = jASnowPrt.getDouble(0);}
                 
                 snowN = jASnowPrt.getDouble(1);
-                
-                // 'snowRange' can have null at [0]
-                if (jASnowRange.isNull(0)) {snowRngD = "";}
-                else {snowRngD = jASnowRange.getString(0);}
-                
-                snowRngN = jASnowRange.getString(1);
+
                 
                 // 'temperatureHeatIndex' can have null at [0]
                 if (jAHeatIndex.isNull(0)) {heatIdxD = 0;}
@@ -307,8 +259,6 @@ public class CallWUAPI {
                 qpfN = jAQpfPrt.getDouble(3);
                 snowD = jASnowPrt.getDouble(2);
                 snowN = jASnowPrt.getDouble(3);
-                snowRngD = jASnowRange.getString(2);
-                snowRngN = jASnowRange.getString(3);
                 heatIdxD = jAHeatIndex.getInt(2);
                 heatIdxN = jAHeatIndex.getInt(3);
                 windChlD = jAWindChill.getInt(2);
@@ -334,8 +284,6 @@ public class CallWUAPI {
                 qpfN = jAQpfPrt.getDouble(5);
                 snowD = jASnowPrt.getDouble(4);
                 snowN = jASnowPrt.getDouble(5);
-                snowRngD = jASnowRange.getString(4);
-                snowRngN = jASnowRange.getString(5);
                 heatIdxD = jAHeatIndex.getInt(4);
                 heatIdxN = jAHeatIndex.getInt(5);
                 windChlD = jAWindChill.getInt(4);
@@ -360,8 +308,6 @@ public class CallWUAPI {
                 qpfN = jAQpfPrt.getDouble(7);
                 snowD = jASnowPrt.getDouble(6);
                 snowN = jASnowPrt.getDouble(7);
-                snowRngD = jASnowRange.getString(6);
-                snowRngN = jASnowRange.getString(7);
                 heatIdxD = jAHeatIndex.getInt(6);
                 heatIdxN = jAHeatIndex.getInt(7);
                 windChlD = jAWindChill.getInt(6);
@@ -386,8 +332,6 @@ public class CallWUAPI {
                 qpfN = jAQpfPrt.getDouble(9);
                 snowD = jASnowPrt.getDouble(8);
                 snowN = jASnowPrt.getDouble(9);
-                snowRngD = jASnowRange.getString(8);
-                snowRngN = jASnowRange.getString(9);
                 heatIdxD = jAHeatIndex.getInt(8);
                 heatIdxN = jAHeatIndex.getInt(9);
                 windChlD = jAWindChill.getInt(8);
@@ -412,8 +356,6 @@ public class CallWUAPI {
                 qpfN = jAQpfPrt.getDouble(11);
                 snowD = jASnowPrt.getDouble(10);
                 snowN = jASnowPrt.getDouble(11);
-                snowRngD = jASnowRange.getString(10);
-                snowRngN = jASnowRange.getString(11);
                 heatIdxD = jAHeatIndex.getInt(10);
                 heatIdxN = jAHeatIndex.getInt(11);
                 windChlD = jAWindChill.getInt(10);
@@ -422,9 +364,9 @@ public class CallWUAPI {
                 windPhN = jAWindPhrase.getString(10);
             }
 
-            FiveDayForecast fdf = new FiveDayForecast(date, dow, nar, qpf, snow, tMax, tMin,
+            FiveDayForecast fdf = new FiveDayForecast(date, dow, nar, tMax, tMin,
                     dayPrtD, dayPrtN, narrDay, narrNight, precipD, precipN, cloudD, cloudN,
-                    precipTypeD, precipTypeN, qpfD, qpfN, snowD, snowN, snowRngD, snowRngN,
+                    precipTypeD, precipTypeN, qpfD, qpfN, snowD, snowN, 
                     heatIdxD, heatIdxN, windChlD, windChlN, windPhD, windPhN);
             forecasts.add(fdf);
             
@@ -440,7 +382,6 @@ public class CallWUAPI {
         
         System.out.println("The forecast for " + dayF.getDayOfWeek() + ", " + dayF.getDate() + " is:");
         System.out.println(dayF.getNarrative());
-        System.out.println("Rain: " + dayF.getQpf() + " inches / Snow: " + dayF.getQpfSnow() + " inches.");
 
         if (dayF.getTemperatureMax() == 989) { 
             // 989 value assigned to catch Null values and to display different message.
@@ -457,12 +398,9 @@ public class CallWUAPI {
             // "XX" value assigned to catch Null values and to display a different message
             System.out.println(dayF.getDaypartNameD() + ":");
             System.out.println(dayF.getNarrativeD());
-            System.out.println("Rain: " + dayF.getPrecipChanceD() +"% / Type:" 
-                    + dayF.getPrecipTypeD() + " / Inches: " + dayF.getQpfD());
+            System.out.println("Rain: " + dayF.getPrecipChanceD() +"% / Inches: " + dayF.getQpfD());
             
             String snowRange = ""; // To a blank snowRange something to display
-            if (dayF.getSnowRangeD().equals("")) {snowRange = "-";}
-            else {snowRange = dayF.getSnowRangeD();}
             System.out.println("Snow: " + dayF.getQpfSnowD() + " inches. With a range of " 
                     + snowRange);
             
@@ -474,10 +412,8 @@ public class CallWUAPI {
         System.out.println();
         System.out.println(dayF.getDaypartNameN() + ":");
         System.out.println(dayF.getNarrativeN());
-        System.out.println("Rain: " + dayF.getPrecipChanceN() +"% / Type:" 
-                + dayF.getPrecipTypeN() + " / Inches: " + dayF.getQpfN());
-        System.out.println("Snow: " + dayF.getQpfSnowN() + " inches. With a range of " 
-                + dayF.getSnowRangeN());
+        System.out.println("Rain: " + dayF.getPrecipChanceN() +"% / Inches: " + dayF.getQpfN());
+        System.out.println("Snow: " + dayF.getQpfSnowN() + " inches."); 
         System.out.println("Cloud cover: " + dayF.getCloudCoverN() + "%");
         System.out.println("Heat Index: " + dayF.getTemperatureHeatIndexN() +
                 "F / Wind Chill: " + dayF.getTemperatureWindChillN() + "F");
