@@ -36,12 +36,18 @@ public class jsonIO {
 		//For the locations input, put them into a JSON object and then put that JSON object into a json array
 		int i = 0;
 		for (location address : locations) {
-			JSONObject jobj = new JSONObject();
+			try {
+				JSONObject jobj = new JSONObject();
+			
 			jobj.put("lat", address.getLatitude());
 			jobj.put("longitude", address.getLongitude());
 			jobj.put("locationName", address.getDisplayName());
 			savedSearch.put(i, jobj);
 			i++;
+			}
+			catch (JSONException e) {
+				e.printStackTrace();
+			}
 		}
 		//write the JSON to the file specified
 		File f = new File(directoryPath + filename);
@@ -226,10 +232,10 @@ public class jsonIO {
 					narrativePm = c.getString("detailedForecast");
 					namePm = c.getString("name");
 					
-					FiveDayForecast tempWeather = new FiveDayForecast(date.toString(), date.getDayOfWeek().toString(), b.getString("detailedForecast"),  precipAmountAm, snowfallAm, 
-							(int)Math.round(highTemp), (int)Math.round(lowTemp), nameAm, namePm, narrativeAm, narrativePm, precipProbAm, precipProbPm, cloudCoverAm, cloudCoverPm,
-							"XX", "XX", precipAmountAm, precipAmountPm, snowfallAm, snowfallPm, "XX", "XX", (int)Math.round(heatIndexAm), (int)Math.round(heatIndexPm),
-							(int)Math.round(windChillAm), (int)Math.round(windChillPm), windPhraseAm, windPhrasePm);
+					FiveDayForecast tempWeather = new FiveDayForecast(date.toString(), date.getDayOfWeek().toString(), b.getString("detailedForecast"),  
+							(int)Math.round(highTemp), (int)Math.round(lowTemp), nameAm, namePm, narrativeAm, narrativePm, precipProbAm, precipProbPm, 
+							cloudCoverAm, cloudCoverPm,	"XX", "XX", precipAmountAm, precipAmountPm, snowfallAm, snowfallPm, (int)Math.round(heatIndexAm), 
+							(int)Math.round(heatIndexPm),(int)Math.round(windChillAm), (int)Math.round(windChillPm), windPhraseAm, windPhrasePm);
 					weatherData.add(tempWeather);
 					
 					
@@ -240,10 +246,10 @@ public class jsonIO {
 					Double lowTemp = (parseForecastGridData(forecastGridDataObject, startTimeOne, endTimeOne, "minTemperature", 1) * 9.0 / 5.0) + 32;
 
 
-					FiveDayForecast tempWeather = new FiveDayForecast(date.toString(), date.getDayOfWeek().toString(), b.getString("detailedForecast"),  precipAmountAm, snowfallAm, 
-							highTemp.intValue(), lowTemp.intValue(), namePm, nameAm, narrativePm, narrativeAm, precipProbPm, precipProbAm, cloudCoverPm, cloudCoverAm,
-							"XX", "XX", precipAmountPm, precipAmountAm, snowfallPm, snowfallAm, "XX", "XX", (int)Math.round(heatIndexPm), (int)Math.round(heatIndexAm),
-							(int)Math.round(windChillPm), (int)Math.round(windChillAm), windPhrasePm, windPhraseAm);
+					FiveDayForecast tempWeather = new FiveDayForecast(date.toString(), date.getDayOfWeek().toString(), b.getString("detailedForecast"),
+							(int)Math.round(highTemp), (int)Math.round(lowTemp), namePm, nameAm, narrativePm, narrativeAm, precipProbPm, precipProbAm, 
+							cloudCoverPm, cloudCoverAm, "XX", "XX", precipAmountPm, precipAmountAm, snowfallPm, snowfallAm, (int)Math.round(heatIndexPm), 
+							(int)Math.round(heatIndexAm),(int)Math.round(windChillPm), (int)Math.round(windChillAm), windPhrasePm, windPhraseAm); //25
 					weatherData.add(tempWeather);
 
 				}
