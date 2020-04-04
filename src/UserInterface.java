@@ -161,7 +161,7 @@ public class UserInterface {
                 initSelection = scan.next();
             }
             
-            System.out.println("\n\nOut of While Loop!!");
+            System.out.println("\n\n**Out of While Loop!!**");
         }
     }
     
@@ -170,7 +170,7 @@ public class UserInterface {
      */
     public void useExistingList(String filename) {
         ArrayList<location> locsArray = jIO.fileReader(filename);
-        System.out.println("Let's get the forecasts for your locations in <" + filename + ">:");
+        System.out.println("\n\nLet's get the forecasts for your locations in <" + filename + ">:");
         
         int num = 1;
         for (location location : locsArray) {
@@ -232,8 +232,8 @@ public class UserInterface {
     
     public static void main(String[] args) {
         UserInterface ui = new UserInterface();
-//        ui.welcome(); // runs welcome messages
-//        ui.selection(); // runs the selection method
+        ui.welcome(); // runs welcome messages
+        ui.selection(); // runs the selection method
         
 //        ui.filesInDir(); // for testing .filesInDir method
 
