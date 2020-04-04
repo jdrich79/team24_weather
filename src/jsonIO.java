@@ -54,7 +54,9 @@ public class jsonIO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		catch (JSONException e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -195,7 +197,7 @@ public class jsonIO {
 				String namePm = "XX";
 
 				//parses out the values needed from the gridData API
-				precipProbAm = (parseForecastGridData(forecastGridDataObject, startTimeOne, endTimeOne, "probabilityOfPrecipitation", 1)).intValue();
+				precipProbAm = (int)Math.round(parseForecastGridData(forecastGridDataObject, startTimeOne, endTimeOne, "probabilityOfPrecipitation", 1));
 				precipAmountAm = parseForecastGridData(forecastGridDataObject, startTimeOne, endTimeOne, "quantitativePrecipitation", 0) / 25.4;
 				cloudCoverAm = parseForecastGridData(forecastGridDataObject, startTimeOne, endTimeOne, "skyCover", 1).intValue();
 				precipTypeAm = "";
@@ -213,7 +215,7 @@ public class jsonIO {
 					highTemp = (highTemp * 9.0 / 5.0) + 32.0;
 					Double lowTemp = (parseForecastGridData(forecastGridDataObject, startTimeOne, endTimeTwo, "minTemperature", 1) * 9 / 5) + 32;
 					
-					precipProbPm = parseForecastGridData(forecastGridDataObject, startTimeTwo, endTimeTwo, "probabilityOfPrecipitation", 1).intValue();
+					precipProbPm = (int)Math.round(parseForecastGridData(forecastGridDataObject, startTimeTwo, endTimeTwo, "probabilityOfPrecipitation", 1));
 					precipAmountPm = parseForecastGridData(forecastGridDataObject, startTimeTwo, endTimeTwo, "quantitativePrecipitation", 0) / 25.4;
 					cloudCoverPm = parseForecastGridData(forecastGridDataObject, startTimeTwo, endTimeTwo, "skyCover", 1).intValue();
 					precipTypePm = "";
@@ -240,17 +242,11 @@ public class jsonIO {
 
 					FiveDayForecast tempWeather = new FiveDayForecast(date.toString(), date.getDayOfWeek().toString(), b.getString("detailedForecast"),  precipAmountAm, snowfallAm, 
 							highTemp.intValue(), lowTemp.intValue(), namePm, nameAm, narrativePm, narrativeAm, precipProbPm, precipProbAm, cloudCoverPm, cloudCoverAm,
-							"XX", "XX", precipAmountPm, precipAmountAm, snowfallPm, snowfallAm, "XX", "XX", new Integer(heatIndexPm.intValue()), new Integer(heatIndexAm.intValue()),
-							new Integer(windChillPm.intValue()), new Integer(windChillAm.intValue()), windPhrasePm, windPhraseAm);
+							"XX", "XX", precipAmountPm, precipAmountAm, snowfallPm, snowfallAm, "XX", "XX", (int)Math.round(heatIndexPm), (int)Math.round(heatIndexAm),
+							(int)Math.round(windChillPm), (int)Math.round(windChillAm), windPhrasePm, windPhraseAm);
 					weatherData.add(tempWeather);
 
 				}
-
-				/*new Weather(b.getInt("number"), b.getString("name"), (b.getString("startTime")), (b.getString("endTime")),
-				b.getBoolean("isDaytime"), highTemp, lowTemp, b.getString("windSpeed"), b.getString("windDirection"), b.getString("icon"),
-				b.getString("shortForecast"), , precipProb, precipAmount); 
-				weatherData.add(tempWeather);
-				*/
 		}
 			
 		}
