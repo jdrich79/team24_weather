@@ -3,13 +3,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class UserInterface {
     private Scanner scan;
+    private jsonIO jIO = new jsonIO();
+    //private location loc = new location();
     
-    
+ 
     /**
      * Displays a welcome message to the user.
      */
@@ -21,7 +24,56 @@ public class UserInterface {
         
         System.out.println("You can maintain a 'Location List' of your favorite places "
                 + "and get a single \rweather forecast report for all your locations in one report.\n");
+        
+        // Pauses to allow welcome be displayed for a set amount of time before initial instructions.
+        // TODO - do we want to try to clear the console?
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
+    }
+    /**
+     * Helper method to take in ArrayList and: <br> 
+     * 1. Pretty print a numbered list <br>
+     * 2. Put that number list into a HashMap
+     * @param list (ArrayList) - List to be pretty printed and put in Hashmap
+     * @return (HashMap) - Numbered list in a HashMap
+     */
+    public HashMap<Integer, String> prettyPrintList(ArrayList<String> list) {
+        HashMap<Integer, String> pPrtList = new HashMap<Integer, String>();
+                
+        int num = 1;
+        for (int i = 0; i < list.size(); i++) {
+            String file = list.get(i);
+            System.out.println(num + ". " + file);
+            pPrtList.put(num, file);
+            num++;
+        }
+        
+        return pPrtList;
+        
+    }
+ 
+    /**
+     * Helper method to take in an 'int' and return a list from 1 to int
+     * in a String array
+     * @param potentialListSize (int) - value for String array 1 to 'int'
+     * @return (String[])
+     */
+    public String numString(int potentialListSize) {
+        String[] numOptions = new String[potentialListSize];
+        Integer num = 1;
+        for (int i = 0; i < potentialListSize; i++) {
+            numOptions[i] = num.toString();
+            num++;
+                 
+        }
+        String numsList = Arrays.toString(numOptions);
+        // System.out.println(numsList);
+        return numsList;
     }
     
     /**
@@ -31,22 +83,58 @@ public class UserInterface {
      * While Loop used to continue prompting until a valid response it provided.
      */
     public void selection() {
-        System.out.println("\nDo you have an existing 'Location List' you would like to use? "
-                + "\rIf not we can build a new one! You may also edit an existing Location List.\n");
-        System.out.print("If you have an existing Location List, type 'Y'.  "
-                + "\rOtherwise, enter 'N' for New or 'E' to Edit: ");
+        ArrayList<String> files = jIO.getFiles(); // gets a list of potential files that could be Location Lists (.json)
+        int numOfExistingFiles = files.size(); // checks the list of the ArrayList
+        HashMap<Integer, String> locList = this.prettyPrintList(files); // creates a numbered Hashmap of Location List files
+        // If there are no .json files in the SavedSearches sub-folder, goes right to creating a new list
+        if (numOfExistingFiles == 0) {
+            System.out.println("\nIt doesn't look like there are any saved Location Lists in the current directory.\n"
+                    + "Let's start a new Location List!");
+            
+            System.out.println("\n\n\n\n**If you believe you have a saved Location Lists, please check that this "
+                    + "\napplication and the Locations lists are located in the same directory structure.");
+            
+            /// GO TO createNewList 
+        }
+        /*
+         *  If there are potential location lists, a pretty print list is presented along with the option
+         *  to create a new list or edit an existing list.
+         */
+        else {
+            // creating a String to become options for user input, either (1) or (1-n), n = size of ArrayList
+            String listNums = "";
+            if (numOfExistingFiles == 1) {
+                listNums = "(1)";
+            } else {listNums = "(1-" + numOfExistingFiles + ")";}
+            
+            System.out.println("It looks like you might have some saved Location List!");
+            
+            System.out.println("\nWould you like to get a forecast report for one of the existing Location List files?"
+                    + "\nYou can also: 'N' Create a new list, or 'E' Edit an existing list.");
+            
+            System.out.print("\nTo use an existing list, enter the corresponding number " + listNums + ", "
+                    + "\n'N' for a new list, or 'E' to edit an existing: ");
+        }
+
+        // Using the 'numString' helper method, this take is the number of existing files found in the 
+        // working directory and creates a String list of 1 to n --> n = num of files found. ex. [1, 2, 3, 4]
+        String fileNumsList = this.numString(numOfExistingFiles); 
         
         scan = new Scanner(System.in);
         String initSelection = scan.next();
-        
+
         int validCheck = 0; // Variable used to continue looping until valid response received.
         
         while (validCheck == 0) {
-            if (initSelection.toLowerCase().equals("y")) {
-                System.out.println("Selected 'Y'");
-                validCheck = 1; // switched to '1' to exit while loop
+            // checks if user input a number that corresponds to the listed files.
+            if(fileNumsList.contains(initSelection)) {
+                int numSelection = Integer.parseInt(initSelection); // converts num from String to int
+                String selectedFile = locList.get(numSelection); // gets the file name from the 'locList' HashMap
+                System.out.println("\nYou selected --> " + numSelection + ". " + selectedFile);
                 
-                // GO TO: use existing Location List method
+                validCheck = 1;
+                
+                // GO TO: useExistingList
                 
             } else if (initSelection.toLowerCase().equals("n")) {
                 System.out.println("Selected 'N' for New");
@@ -68,17 +156,28 @@ public class UserInterface {
                  * valid response is received 
                  */
                 System.out.println("\nThat is not a valid selection. Please try again!!");
-                System.out.print("Enter 'Y' to use existing 'Location List', 'N' to create a new list, or 'E' to edit your list: ");
+                System.out.print("Enter the number corresponding to an existing 'Location List', "
+                        + "\n'N' to create a new list, or 'E' to edit your list: ");
                 initSelection = scan.next();
             }
+            
+            System.out.println("\n\nOut of While Loop!!");
         }
     }
     
     /**
      * Method to handle when user input is to use an existing Location List
      */
-    public void useExistingList() {
+    public void useExistingList(String filename) {
+        ArrayList<location> locsArray = jIO.fileReader(filename);
+        System.out.println("Let's get the forecasts for your locations in <" + filename + ">:");
         
+        int num = 1;
+        for (location location : locsArray) {
+            System.out.println("\nLocation #" + num + ": " + location.getDisplayName());
+            System.out.println("At a longitude/latitude of " + location.getLongitude() + "/" + location.getLatitude());
+            num++;
+        }
     }
     
     /**
@@ -133,11 +232,14 @@ public class UserInterface {
     
     public static void main(String[] args) {
         UserInterface ui = new UserInterface();
-//        ui.welcome();
-//        ui.selection();
+//        ui.welcome(); // runs welcome messages
+//        ui.selection(); // runs the selection method
         
-        ui.filesInDir();
+//        ui.filesInDir(); // for testing .filesInDir method
+
+//        ui.numString(4); // for testing .numString method
         
+        ui.useExistingList("weather.json");
         
     }
 
