@@ -240,17 +240,11 @@ public class jsonIO {
 
 					FiveDayForecast tempWeather = new FiveDayForecast(date.toString(), date.getDayOfWeek().toString(), b.getString("detailedForecast"),  precipAmountAm, snowfallAm, 
 							highTemp.intValue(), lowTemp.intValue(), namePm, nameAm, narrativePm, narrativeAm, precipProbPm, precipProbAm, cloudCoverPm, cloudCoverAm,
-							"XX", "XX", precipAmountPm, precipAmountAm, snowfallPm, snowfallAm, "XX", "XX", new Integer(heatIndexPm.intValue()), new Integer(heatIndexAm.intValue()),
-							new Integer(windChillPm.intValue()), new Integer(windChillAm.intValue()), windPhrasePm, windPhraseAm);
+							"XX", "XX", precipAmountPm, precipAmountAm, snowfallPm, snowfallAm, "XX", "XX", (int)Math.round(heatIndexPm), (int)Math.round(heatIndexAm),
+							(int)Math.round(windChillPm), (int)Math.round(windChillAm), windPhrasePm, windPhraseAm);
 					weatherData.add(tempWeather);
 
 				}
-
-				/*new Weather(b.getInt("number"), b.getString("name"), (b.getString("startTime")), (b.getString("endTime")),
-				b.getBoolean("isDaytime"), highTemp, lowTemp, b.getString("windSpeed"), b.getString("windDirection"), b.getString("icon"),
-				b.getString("shortForecast"), , precipProb, precipAmount); 
-				weatherData.add(tempWeather);
-				*/
 		}
 			
 		}
