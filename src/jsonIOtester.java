@@ -6950,9 +6950,23 @@ class jsonIOtester {
 				"}";
 				
 		jsonIO jio = new jsonIO();
-		jio.parseNWSForecast(forecastResponseBody, forecastGridDataResponseBody);
+		ArrayList<FiveDayForecast> fivedays = jio.parseNWSForecast(forecastResponseBody, forecastGridDataResponseBody);
 		
-		assertEquals(0,0);
+		assertEquals(fivedays.get(0).getDayOfWeek(),"WEDNESDAY");
+		assertEquals(fivedays.get(1).getDayOfWeek(),"THURSDAY");
+		assertEquals(fivedays.get(0).getTemperatureMax(),72);
+		assertEquals(fivedays.get(1).getTemperatureMax(),38);
+		assertEquals(fivedays.get(2).getTemperatureMax(),41);
+		assertEquals(fivedays.get(3).getTemperatureMax(),59);
+		assertEquals(fivedays.get(4).getTemperatureMax(),69);
+		assertEquals(fivedays.get(5).getTemperatureMax(),71);
+	
+		assertEquals(fivedays.get(0).getTemperatureMin(),30);
+		assertEquals(fivedays.get(1).getTemperatureMin(),16);
+		assertEquals(fivedays.get(2).getTemperatureMin(),26);
+		assertEquals(fivedays.get(3).getTemperatureMin(),33);
+		assertEquals(fivedays.get(4).getTemperatureMin(),36);
+		assertEquals(fivedays.get(5).getTemperatureMin(),39);
 	}
 
 }
