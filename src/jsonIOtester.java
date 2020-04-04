@@ -6954,6 +6954,10 @@ class jsonIOtester {
 		
 		assertEquals(fivedays.get(0).getDayOfWeek(),"WEDNESDAY");
 		assertEquals(fivedays.get(1).getDayOfWeek(),"THURSDAY");
+		assertEquals(fivedays.get(2).getDayOfWeek(),"FRIDAY");
+		assertEquals(fivedays.get(3).getDayOfWeek(),"SATURDAY");
+		assertEquals(fivedays.get(4).getDayOfWeek(),"SUNDAY");
+		
 		assertEquals(fivedays.get(0).getTemperatureMax(),72);
 		assertEquals(fivedays.get(1).getTemperatureMax(),38);
 		assertEquals(fivedays.get(2).getTemperatureMax(),41);
@@ -6967,6 +6971,33 @@ class jsonIOtester {
 		assertEquals(fivedays.get(3).getTemperatureMin(),33);
 		assertEquals(fivedays.get(4).getTemperatureMin(),36);
 		assertEquals(fivedays.get(5).getTemperatureMin(),39);
+		
+		assertEquals(6, fivedays.get(0).getPrecipChanceN());
+		assertEquals(40, fivedays.get(1).getPrecipChanceN());
+		assertEquals(8, fivedays.get(2).getPrecipChanceN());
+		assertEquals(7, fivedays.get(3).getPrecipChanceN());
+		assertEquals(3, fivedays.get(4).getPrecipChanceN());
+		assertEquals(1, fivedays.get(5).getPrecipChanceN());
+		assertEquals(8, fivedays.get(1).getPrecipChanceD());
+		assertEquals(24, fivedays.get(2).getPrecipChanceD());
+		assertEquals(6, fivedays.get(3).getPrecipChanceD());
+		assertEquals(1, fivedays.get(4).getPrecipChanceD());
+		assertEquals(1, fivedays.get(5).getPrecipChanceD());
+		assertEquals(989, fivedays.get(0).getPrecipChanceD());
+		
+		assertEquals(0, fivedays.get(0).getQpfN());
+		assertEquals(.16999999999999998, fivedays.get(1).getQpfN());
+		assertEquals(0, fivedays.get(2).getQpfN());
+		assertEquals(0, fivedays.get(3).getQpfN());
+		assertEquals(0, fivedays.get(4).getQpfN());
+		assertEquals(0, fivedays.get(5).getQpfN());
+		
+		assertEquals(989, fivedays.get(0).getQpfD());
+		assertEquals(0, fivedays.get(1).getQpfD());
+		assertEquals(.01, fivedays.get(2).getQpfD());
+		assertEquals(0, fivedays.get(3).getQpfD());
+		assertEquals(0, fivedays.get(4).getQpfD());
+		assertEquals(0, fivedays.get(5).getQpfD());
 	}
 
 }

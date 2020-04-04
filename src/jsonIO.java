@@ -54,7 +54,9 @@ public class jsonIO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		catch (JSONException e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -195,7 +197,7 @@ public class jsonIO {
 				String namePm = "XX";
 
 				//parses out the values needed from the gridData API
-				precipProbAm = (parseForecastGridData(forecastGridDataObject, startTimeOne, endTimeOne, "probabilityOfPrecipitation", 1)).intValue();
+				precipProbAm = (int)Math.round(parseForecastGridData(forecastGridDataObject, startTimeOne, endTimeOne, "probabilityOfPrecipitation", 1));
 				precipAmountAm = parseForecastGridData(forecastGridDataObject, startTimeOne, endTimeOne, "quantitativePrecipitation", 0) / 25.4;
 				cloudCoverAm = parseForecastGridData(forecastGridDataObject, startTimeOne, endTimeOne, "skyCover", 1).intValue();
 				precipTypeAm = "";
@@ -213,7 +215,7 @@ public class jsonIO {
 					highTemp = (highTemp * 9.0 / 5.0) + 32.0;
 					Double lowTemp = (parseForecastGridData(forecastGridDataObject, startTimeOne, endTimeTwo, "minTemperature", 1) * 9 / 5) + 32;
 					
-					precipProbPm = parseForecastGridData(forecastGridDataObject, startTimeTwo, endTimeTwo, "probabilityOfPrecipitation", 1).intValue();
+					precipProbPm = (int)Math.round(parseForecastGridData(forecastGridDataObject, startTimeTwo, endTimeTwo, "probabilityOfPrecipitation", 1));
 					precipAmountPm = parseForecastGridData(forecastGridDataObject, startTimeTwo, endTimeTwo, "quantitativePrecipitation", 0) / 25.4;
 					cloudCoverPm = parseForecastGridData(forecastGridDataObject, startTimeTwo, endTimeTwo, "skyCover", 1).intValue();
 					precipTypePm = "";
