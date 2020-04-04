@@ -1,6 +1,8 @@
 import java.io.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 import org.json.*;
@@ -99,6 +101,9 @@ public class jsonIO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		catch (JSONException e) {
+			System.out.println("JSON exception");
+		}
 		return locations;
 	}
 	
@@ -144,30 +149,110 @@ public class jsonIO {
 	 * @param forecastGridDataResponseBody
 	 * @return
 	 */
-	public ArrayList<Weather> parseNWSForecast(String forecastResponseBody, String forecastGridDataResponseBody){
+	public ArrayList<FiveDayForecast> parseNWSForecast(String forecastResponseBody, String forecastGridDataResponseBody){
 		
 		JSONObject forecastObject = new JSONObject(forecastResponseBody);
 		JSONObject forecastGridDataObject = new JSONObject(forecastGridDataResponseBody);
-		ArrayList<Weather> weatherData = new ArrayList<Weather>();
+		ArrayList<FiveDayForecast> weatherData = new ArrayList<FiveDayForecast>();
 		JSONArray array = forecastObject.getJSONObject("properties").getJSONArray("periods");
 		
 	
 		//gets forecast for each entry in the array
-		for (int i = 0; i < array.length(); i++) {
+		for (int i = 0; i < array.length()-1; i++) {
 			JSONObject b = array.getJSONObject(i);
-			CharSequence startTime = b.getString("startTime").subSequence(0, 19);
-			CharSequence endTime = b.getString("endTime").subSequence(0, 19);
-
-			//parses out the values needed from the gridData API
-			double precipProb = parseForecastGridData(forecastGridDataObject, startTime, endTime, "probabilityOfPrecipitation");
-			double precipAmount = parseForecastGridData(forecastGridDataObject, startTime, endTime, "quantitativePrecipitation");
-			double highTemp = parseForecastGridData(forecastGridDataObject, startTime, endTime, "maxTemperature");
-			double lowTemp = parseForecastGridData(forecastGridDataObject, startTime, endTime, "minTemperature");
+			JSONObject c = array.getJSONObject(i+1);
+			LocalDateTime startTimeOne = LocalDateTime.parse(b.getString("startTime").subSequence(0, 19));
+			LocalDateTime endTimeOne = LocalDateTime.parse(b.getString("endTime").subSequence(0, 19));
+			LocalDateTime startTimeTwo = LocalDateTime.parse(c.getString("startTime").subSequence(0, 19));
+			LocalDateTime endTimeTwo = LocalDateTime.parse(c.getString("endTime").subSequence(0, 19));
 			
-			Weather tempWeather = new Weather(b.getInt("number"), b.getString("name"), (b.getString("startTime")), (b.getString("endTime")),
+
+			LocalDate date = startTimeOne.toLocalDate();
+			LocalDate dateTwo = startTimeTwo.toLocalDate();
+			
+			//for the first day or if the start date of the current object is the same as the next one get a variable in there
+			if (i == 0 || date.equals(dateTwo)) {
+				//Init AM & PM variables
+				Integer precipProbAm = 989;
+				Double precipAmountAm = 989.0;
+				Integer cloudCoverAm = 989;
+				String precipTypeAm = "";
+				Double snowfallAm = 989.0;
+				Double heatIndexAm = 989.0;
+				Double windChillAm = 989.0;
+				String windPhraseAm = "XX";
+				String narrativeAm = "XX";
+				String nameAm = "XX";
+				Integer precipProbPm = 989;
+				Double precipAmountPm = 989.0;
+				Integer cloudCoverPm = 989;
+				String precipTypePm = "";
+				Double snowfallPm = 989.0;
+				Double heatIndexPm = 989.0;
+				Double windChillPm = 989.0;
+				String windPhrasePm = "XX";
+				String narrativePm = "XX";
+				String namePm = "XX";
+
+				//parses out the values needed from the gridData API
+				precipProbAm = (parseForecastGridData(forecastGridDataObject, startTimeOne, endTimeOne, "probabilityOfPrecipitation", 1)).intValue();
+				precipAmountAm = parseForecastGridData(forecastGridDataObject, startTimeOne, endTimeOne, "quantitativePrecipitation", 0) / 25.4;
+				cloudCoverAm = parseForecastGridData(forecastGridDataObject, startTimeOne, endTimeOne, "skyCover", 1).intValue();
+				precipTypeAm = "";
+				snowfallAm = (parseForecastGridData(forecastGridDataObject, startTimeOne, endTimeOne, "snowfallAmount", 0)) / 25.4;
+				heatIndexAm = (parseForecastGridData(forecastGridDataObject, startTimeOne, endTimeOne, "heatIndex", 1) * 9.0 / 5.0) + 32;
+				windChillAm = (parseForecastGridData(forecastGridDataObject, startTimeOne, endTimeOne, "windChill", 1) * 9.0 / 5.0) + 32;
+				windPhraseAm = b.getString("windDirection");
+				narrativeAm = b.getString("detailedForecast");
+				nameAm = b.getString("name");
+				
+				
+				if (date.isEqual(dateTwo)) {
+					
+					Double highTemp = parseForecastGridData(forecastGridDataObject, startTimeOne, endTimeTwo, "maxTemperature", 1);
+					highTemp = (highTemp * 9.0 / 5.0) + 32.0;
+					Double lowTemp = (parseForecastGridData(forecastGridDataObject, startTimeOne, endTimeTwo, "minTemperature", 1) * 9 / 5) + 32;
+					
+					precipProbPm = parseForecastGridData(forecastGridDataObject, startTimeTwo, endTimeTwo, "probabilityOfPrecipitation", 1).intValue();
+					precipAmountPm = parseForecastGridData(forecastGridDataObject, startTimeTwo, endTimeTwo, "quantitativePrecipitation", 0) / 25.4;
+					cloudCoverPm = parseForecastGridData(forecastGridDataObject, startTimeTwo, endTimeTwo, "skyCover", 1).intValue();
+					precipTypePm = "";
+					snowfallPm = (parseForecastGridData(forecastGridDataObject, startTimeTwo, endTimeTwo, "snowfallAmount", 0)) / 25.4;
+					heatIndexPm = (parseForecastGridData(forecastGridDataObject, startTimeTwo, endTimeTwo, "heatIndex", 1) * 9 / 5) + 32;
+					windChillPm = (parseForecastGridData(forecastGridDataObject, startTimeTwo, endTimeTwo, "windChill", 1) * 9 / 5) + 32;
+					windPhrasePm = c.getString("windDirection");
+					narrativePm = c.getString("detailedForecast");
+					namePm = c.getString("name");
+					
+					FiveDayForecast tempWeather = new FiveDayForecast(date.toString(), date.getDayOfWeek().toString(), b.getString("detailedForecast"),  precipAmountAm, snowfallAm, 
+							(int)Math.round(highTemp), (int)Math.round(lowTemp), nameAm, namePm, narrativeAm, narrativePm, precipProbAm, precipProbPm, cloudCoverAm, cloudCoverPm,
+							"XX", "XX", precipAmountAm, precipAmountPm, snowfallAm, snowfallPm, "XX", "XX", (int)Math.round(heatIndexAm), (int)Math.round(heatIndexPm),
+							(int)Math.round(windChillAm), (int)Math.round(windChillPm), windPhraseAm, windPhrasePm);
+					weatherData.add(tempWeather);
+					
+					
+				}
+				else {
+					Double highTemp = parseForecastGridData(forecastGridDataObject, startTimeOne.minusDays(1), endTimeOne, "maxTemperature", 1);
+					highTemp = (highTemp * 9.0 / 5.0) + 32.0;
+					Double lowTemp = (parseForecastGridData(forecastGridDataObject, startTimeOne, endTimeOne, "minTemperature", 1) * 9.0 / 5.0) + 32;
+
+
+					FiveDayForecast tempWeather = new FiveDayForecast(date.toString(), date.getDayOfWeek().toString(), b.getString("detailedForecast"),  precipAmountAm, snowfallAm, 
+							highTemp.intValue(), lowTemp.intValue(), namePm, nameAm, narrativePm, narrativeAm, precipProbPm, precipProbAm, cloudCoverPm, cloudCoverAm,
+							"XX", "XX", precipAmountPm, precipAmountAm, snowfallPm, snowfallAm, "XX", "XX", new Integer(heatIndexPm.intValue()), new Integer(heatIndexAm.intValue()),
+							new Integer(windChillPm.intValue()), new Integer(windChillAm.intValue()), windPhrasePm, windPhraseAm);
+					weatherData.add(tempWeather);
+
+				}
+
+				/*new Weather(b.getInt("number"), b.getString("name"), (b.getString("startTime")), (b.getString("endTime")),
 				b.getBoolean("isDaytime"), highTemp, lowTemp, b.getString("windSpeed"), b.getString("windDirection"), b.getString("icon"),
-				b.getString("shortForecast"), b.getString("detailedForecast"), precipProb, precipAmount);
-			weatherData.add(tempWeather);
+				b.getString("shortForecast"), , precipProb, precipAmount); 
+				weatherData.add(tempWeather);
+				*/
+		}
+			
 		}
 		return weatherData;
 	}
@@ -200,15 +285,15 @@ public class jsonIO {
 	 * @param key
 	 * @return
 	 */
-	private double parseForecastGridData(JSONObject object, CharSequence startTime, CharSequence endTime, String key) {
+	private Double parseForecastGridData(JSONObject object, LocalDateTime startTime, LocalDateTime endTime, String key, int avgFlag) {
 		//parses out the array of values for the specified key from the input object
 		JSONArray keyData = object.getJSONObject("properties").getJSONObject(key).getJSONArray("values");
 		double counter = 0;
 		double values = 0;
 		
 		//gets the dateTime of start/finish
-		LocalDateTime startDatetime = LocalDateTime.parse(startTime);
-		LocalDateTime endDatetime = LocalDateTime.parse(endTime);
+		//LocalDateTime startDatetime = LocalDateTime.parse(startTime);
+		//LocalDateTime endDatetime = LocalDateTime.parse(endTime);
 		
 		//for all the entries in the array, gets the values within the start/end time and adds them up
 		for (int i = 0; i < keyData.length(); i++) {
@@ -216,18 +301,25 @@ public class jsonIO {
 			JSONObject o = keyData.getJSONObject(i);
 			
 			LocalDateTime t = LocalDateTime.parse(o.getString("validTime").subSequence(0, 16));
-			if ((t.isBefore(endDatetime)) && (t.isAfter(startDatetime) || t.isEqual(startDatetime))) {
+			if ((t.isBefore(endTime)) && (t.isAfter(startTime) || t.isEqual(startTime))) {
 				
-				values += o.getDouble("value");
+				try {
+					values += o.getDouble("value");
+				}
+				catch (JSONException e) {
+					values += 0;
+				}
 				counter++;
 			}
 		}
-
+		
 		//gets and returns the average
-		double avg = values / counter;
-		
-		return avg;
-		
-	}
+		if (avgFlag == 1) {
+			double avg = values / counter;
 
+			return avg;
+		}
+		return values;
+
+	}
 }

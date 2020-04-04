@@ -6,24 +6,61 @@
  *
  */
 public class Activity {
-	private int bestTemp;
-	private int bestPrecip;
-	private int bestWindSpeed;
+	private int bestIndex;
+	private double bestHighTemp;
+	private double bestLowTemp;
+	private String temperatureUnit;
+	private String bestWindSpeed;
+	private String windDirection;
+	private String icon;
+	private String shortForecast;
+	private String longForecast;
+	private double bestProbabilityOfPrecip;
+	private double bestAmountOfPrecip;
 	
-	public int getBestTemp() {
-		return bestTemp;
+	public void sailing() {
+		this.bestHighTemp = 75;
+		this.bestLowTemp = 65;
+		//knots? mph?
+		this.bestWindSpeed = 13;
+		this.bestProbabilityOfPrecip = 0;
+		this.bestAmountOfPrecip = 0;
 	}
-
-	public int getBestPrecip() {
-		return bestPrecip;
+	
+	public void hiking() {
+		this.bestHighTemp = 75;
+		this.bestLowTemp = 65;
+		//knots? mph?
+		this.bestWindSpeed = 13;
+		this.bestProbabilityOfPrecip = 0;
+		this.bestAmountOfPrecip = 0;
 	}
-
-	public int getBestWindSpeed() {
-		return bestWindSpeed;
+	
+	public void climbing() {
+		this.bestHighTemp = 75;
+		this.bestLowTemp = 65;
+		//knots? mph?
+		this.bestWindSpeed = 13;
+		this.bestProbabilityOfPrecip = 0;
+		this.bestAmountOfPrecip = 0;
 	}
-
-	public Activity() {
-
+	
+	public void skiing() {
+		this.bestHighTemp = 75;
+		this.bestLowTemp = 65;
+		//knots? mph?
+		this.bestWindSpeed = 13;
+		this.bestProbabilityOfPrecip = 0;
+		this.bestAmountOfPrecip = 0;
+	}
+	
+	public void biking() {
+		this.bestHighTemp = 75;
+		this.bestLowTemp = 65;
+		//knots? mph?
+		this.bestWindSpeed = 13;
+		this.bestProbabilityOfPrecip = 0;
+		this.bestAmountOfPrecip = 0;
 	}
 	
 }
