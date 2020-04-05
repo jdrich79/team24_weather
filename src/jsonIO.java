@@ -152,7 +152,7 @@ public class jsonIO {
 	
 	/**
 	 * A public class that parses the forecast for the NWS API taking in the responses of the 
-	 * two pieces of forecast data APIs
+	 * two pieces of forecast data APIs. Returns an arraylist of FiveDayForecasts
 	 * @param forecastResponseBody
 	 * @param forecastGridDataResponseBody
 	 * @return
@@ -178,9 +178,12 @@ public class jsonIO {
 			LocalDate date = startTimeOne.toLocalDate();
 			LocalDate dateTwo = startTimeTwo.toLocalDate();
 			
-			//for the first day or if the start date of the current object is the same as the next one get a variable in there
+			/*for the first day or if the start date of the current object is the same as the next object
+			 * create a FiveDayForecast object and add it to the arraylist
+			 * 
+			 */
 			if (i == 0 || date.equals(dateTwo)) {
-				//Init AM & PM variables
+				//Init AM & PM variables to default values that will be "ignored" if not changed
 				Integer precipProbAm = 989;
 				Double precipAmountAm = 989.0;
 				Integer cloudCoverAm = 989;
@@ -214,7 +217,7 @@ public class jsonIO {
 				narrativeAm = b.getString("detailedForecast");
 				nameAm = b.getString("name");
 				
-				
+				//checks if the 2 objects are from the same start date and if so fill out the "PM" variables
 				if (date.isEqual(dateTwo)) {
 					
 					Double highTemp = parseForecastGridData(forecastGridDataObject, startTimeOne, endTimeTwo, "maxTemperature", 1);
@@ -240,12 +243,16 @@ public class jsonIO {
 					
 					
 				}
+				/*if the dates are not equal it means we are in the first object and there is
+				 * no AM forecast for the time period this was called and the FiveDayForecast should be setup as such
+				 */
 				else {
+					//Typically in this case the highTemp already occurred before the start time so we should knock that back to get it 
 					Double highTemp = parseForecastGridData(forecastGridDataObject, startTimeOne.minusDays(1), endTimeOne, "maxTemperature", 1);
 					highTemp = (highTemp * 9.0 / 5.0) + 32.0;
 					Double lowTemp = (parseForecastGridData(forecastGridDataObject, startTimeOne, endTimeOne, "minTemperature", 1) * 9.0 / 5.0) + 32;
 
-
+					//call the fivedayforecast but with the "AM" values (i.e. the first object) in the PM spot
 					FiveDayForecast tempWeather = new FiveDayForecast(date.toString(), date.getDayOfWeek().toString(), b.getString("detailedForecast"),
 							(int)Math.round(highTemp), (int)Math.round(lowTemp), namePm, nameAm, narrativePm, narrativeAm, precipProbPm, precipProbAm, 
 							cloudCoverPm, cloudCoverAm, "XX", "XX", precipAmountPm, precipAmountAm, snowfallPm, snowfallAm, (int)Math.round(heatIndexPm), 
@@ -256,6 +263,7 @@ public class jsonIO {
 		}
 			
 		}
+		//return the weatherData arraylist
 		return weatherData;
 	}
 	
@@ -315,7 +323,7 @@ public class jsonIO {
 			}
 		}
 		
-		//gets and returns the average
+		//gets and returns the average if the flag of 1 is set
 		if (avgFlag == 1) {
 			double avg = values / counter;
 
