@@ -3,8 +3,6 @@ public class FiveDayForecast {
     private String date;
     private String dayOfWeek;
     private String narrative;
-    //private Double qpf;
-    //private Double qpfSnow;
     private Integer temperatureMax;
     private Integer temperatureMin;
     
@@ -17,14 +15,10 @@ public class FiveDayForecast {
     private Integer precipChanceN;
     private Integer cloudCoverD;
     private Integer cloudCoverN;
-    //private String precipTypeD;
-    //private String precipTypeN;
     private Double qpfD;
     private Double qpfN;
     private Double qpfSnowD;
     private Double qpfSnowN;
-    //private String snowRangeD;
-    //private String snowRangeN;
     private Integer temperatureHeatIndexD;
     private Integer temperatureHeatIndexN;
     private Integer temperatureWindChillD;

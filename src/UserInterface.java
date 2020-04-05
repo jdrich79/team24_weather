@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -10,6 +11,8 @@ import java.util.Scanner;
 public class UserInterface {
     private Scanner scan;
     private jsonIO jIO = new jsonIO();
+    private CallWUAPI callWU = new CallWUAPI();
+    private NWSWeatherWebservice callNWS = new NWSWeatherWebservice();
     //private location loc = new location();
     
  
@@ -35,26 +38,38 @@ public class UserInterface {
         }
 
     }
+    
+    
     /**
-     * Helper method to take in ArrayList and: <br> 
-     * 1. Pretty print a numbered list <br>
-     * 2. Put that number list into a HashMap
+     * Helper method to take in ArrayList and pretty print a numbered list 
      * @param list (ArrayList) - List to be pretty printed and put in Hashmap
-     * @return (HashMap) - Numbered list in a HashMap
      */
-    public HashMap<Integer, String> prettyPrintList(ArrayList<String> list) {
-        HashMap<Integer, String> pPrtList = new HashMap<Integer, String>();
-                
+    public void prettyPrintList(ArrayList<String> list) {
         int num = 1;
         for (int i = 0; i < list.size(); i++) {
             String file = list.get(i);
             System.out.println(num + ". " + file);
+            num++;
+        }
+
+    }
+    
+    /**
+     * Helper method to take in ArrayList and put that number list into a HashMap
+     * @param list (ArrayList) - List to be pretty printed and put in Hashmap
+     * @return (HashMap) - Numbered list in a HashMap
+     */
+    public HashMap<Integer, String> hashMapLocList(ArrayList<String> list) {
+        HashMap<Integer, String> pPrtList = new HashMap<Integer, String>();
+        int num = 1;
+        for (int i = 0; i < list.size(); i++) {
+            String file = list.get(i);
+            //System.out.println(num + ". " + file);
             pPrtList.put(num, file);
             num++;
         }
         
         return pPrtList;
-        
     }
  
     /**
@@ -85,7 +100,7 @@ public class UserInterface {
     public void selection() {
         ArrayList<String> files = jIO.getFiles(); // gets a list of potential files that could be Location Lists (.json)
         int numOfExistingFiles = files.size(); // checks the list of the ArrayList
-        HashMap<Integer, String> locList = this.prettyPrintList(files); // creates a numbered Hashmap of Location List files
+        HashMap<Integer, String> locList = this.hashMapLocList(files); // creates a numbered Hashmap of Location List files
         // If there are no .json files in the SavedSearches sub-folder, goes right to creating a new list
         if (numOfExistingFiles == 0) {
             System.out.println("\nIt doesn't look like there are any saved Location Lists in the current directory.\n"
@@ -102,16 +117,18 @@ public class UserInterface {
          */
         else {
             // creating a String to become options for user input, either (1) or (1-n), n = size of ArrayList
+            
             String listNums = "";
             if (numOfExistingFiles == 1) {
                 listNums = "(1)";
             } else {listNums = "(1-" + numOfExistingFiles + ")";}
-            
-            System.out.println("It looks like you might have some saved Location List!");
-            
+
+            System.out.println("It looks like you might have some saved Location List!"); 
+            this.prettyPrintList(files);
+
             System.out.println("\nWould you like to get a forecast report for one of the existing Location List files?"
                     + "\nYou can also: 'N' Create a new list, or 'E' Edit an existing list.");
-            
+
             System.out.print("\nTo use an existing list, enter the corresponding number " + listNums + ", "
                     + "\n'N' for a new list, or 'E' to edit an existing: ");
         }
@@ -130,6 +147,7 @@ public class UserInterface {
             if(fileNumsList.contains(initSelection)) {
                 int numSelection = Integer.parseInt(initSelection); // converts num from String to int
                 String selectedFile = locList.get(numSelection); // gets the file name from the 'locList' HashMap
+                System.out.println(System.lineSeparator().repeat(50)); // poor-man screen clear
                 System.out.println("\nYou selected --> " + numSelection + ". " + selectedFile);
                 
                 validCheck = 1;
@@ -170,15 +188,52 @@ public class UserInterface {
      */
     public void useExistingList(String filename) {
         ArrayList<location> locsArray = jIO.fileReader(filename);
-        System.out.println("\n\nLet's get the forecasts for your locations in <" + filename + ">:");
+        System.out.println("\n\nLet's get the forecasts for your locations in <" + filename + ">\n");
+        
+        /*
+         * Create HashMap to store the multiple location forecasts from WUnderground.
+         * For the first weather service, a message is displayed to show the locations and coordinates
+         */
+        
+        HashMap<String, ArrayList<FiveDayForecast>> forecastsHMap = new HashMap<String, ArrayList<FiveDayForecast>>();
         
         int num = 1;
         for (location location : locsArray) {
+            System.out.print("**************************************************************************************");
             System.out.println("\nLocation #" + num + ": " + location.getDisplayName());
-            System.out.println("At a longitude/latitude of " + location.getLongitude() + "/" + location.getLatitude());
+            System.out.println("At a latitude/longitude of " + location.getLatitude() + "/" + location.getLongitude());
+            System.out.println("**************************************************************************************\n");
+            
+            String latLong = location.getLatitude() + "," + location.getLongitude(); // puts latitude and longitude into String
+            
+            try {
+                // WEATHERUNDERGROUND
+                String jsonRecd = callWU.makeAPICall(latLong);
+                String key = "WU_" + location.getDisplayName();
+                ArrayList<FiveDayForecast> value = callWU.parse5DayJSON(jsonRecd);
+                                
+                forecastsHMap.put(key, value);
+                
+                // NATIONAL WEATHER SERVICE
+                String key2 = "NWS_" + location.getDisplayName();
+                ArrayList<FiveDayForecast> value2 = callNWS.getNWSForecast(latLong);
+                                
+                forecastsHMap.put(key2, value2);
+                
+                
+            } catch (IOException e) {
+                System.out.println("There was an issue calling to forecast for <" + location.getDisplayName() + ">.");
+                e.printStackTrace();
+            }
             num++;
         }
+        
+        
+        
+        
     }
+    
+
     
     /**
      * Method to handle when user input is to create a new Location List

@@ -13,18 +13,18 @@ public class CallWUAPI {
     
     
     
-    public String makeAPICall() throws IOException {
+    public String makeAPICall(String coordinates) throws IOException {
         URL wUnderground;
         URLConnection yc;
         BufferedReader in;
         
-        // https://api.weather.com/v3/wx/forecast/daily/5day?placeid=675c2b6342b3512ea4f15bc9070663be6e36cc4bf61056076c500098c8eb3bbe&units=e&language=en-US&format=json&apiKey=a5951eae4c0f4fb5951eae4c0f7fb544 
-
+        
         String endPoint = "https://api.weather.com";
         String path = "/v3/wx/forecast/daily/5day";
-        String placeID = "675c2b6342b3512ea4f15bc9070663be6e36cc4bf61056076c500098c8eb3bbe";
+        //String geocode = "39.717,-104.9";
+        String geocode = coordinates;
         String apiKey = "a5951eae4c0f4fb5951eae4c0f7fb544";
-        String queryParams = "?placeid=" + placeID + "&units=e&language=en-US&format=json&apiKey=" + apiKey; 
+        String queryParams = "?geocode=" + geocode + "&units=e&language=en-US&format=json&apiKey=" + apiKey; 
 
         String fiveDayURL = endPoint + path + queryParams;  
         
