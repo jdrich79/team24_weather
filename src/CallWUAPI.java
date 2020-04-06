@@ -67,7 +67,14 @@ public class CallWUAPI {
         
     }
     
-
+    
+    /**
+     * 
+     * Method to parse the Weather Underground JSON response string into the FiveDayForecast Class
+     * @param jsonResponse
+     * @return
+     * @throws JSONException
+     */
     public ArrayList<FiveDayForecast> parse5DayJSON(String jsonResponse) throws JSONException {
       //create a JSON object with the String response
         JSONObject jObj = new JSONObject(jsonResponse);
@@ -370,7 +377,7 @@ public class CallWUAPI {
                     heatIdxD, heatIdxN, windChlD, windChlN, windPhD, windPhN);
             forecasts.add(fdf);
             
-            this.weatherNarrative(fdf);
+            //this.weatherNarrative(fdf); // PRINTS THE NARRATIVES
             
         }
   
@@ -378,69 +385,26 @@ public class CallWUAPI {
     }
     
     
-    public String weatherNarrative (FiveDayForecast dayF) {  
-        
-        System.out.println("The forecast for " + dayF.getDayOfWeek() + ", " + dayF.getDate() + " is:");
-        System.out.println(dayF.getNarrative());
-
-        if (dayF.getTemperatureMax() == 989) { 
-            // 989 value assigned to catch Null values and to display different message.
-            System.out.println("Low for today is: " + dayF.getTemperatureMin() + " F");
-        } else {
-            System.out.println("Today's High is " + dayF.getTemperatureMax() +
-                    " F and Low is " + dayF.getTemperatureMin() + "F");
-            System.out.println("\nThe Day and Evening forecasts:\n");
-        }
-        
-        // PART DAY FORECASTS
-
-        if (!dayF.getDaypartNameD().equals("XX")) {
-            // "XX" value assigned to catch Null values and to display a different message
-            System.out.println(dayF.getDaypartNameD() + ":");
-            System.out.println(dayF.getNarrativeD());
-            System.out.println("Rain: " + dayF.getPrecipChanceD() +"% / Inches: " + dayF.getQpfD());
-            
-            String snowRange = ""; // To a blank snowRange something to display
-            System.out.println("Snow: " + dayF.getQpfSnowD() + " inches. With a range of " 
-                    + snowRange);
-            
-            System.out.println("Cloud cover: " + dayF.getCloudCoverD() + "%");
-            System.out.println("Heat Index: " + dayF.getTemperatureHeatIndexD() + 
-                    "F / Wind Chill: " + dayF.getTemperatureWindChillD() + "F");
-            System.out.println("Wind: " + dayF.getWindPhraseD());
-        }
-        System.out.println();
-        System.out.println(dayF.getDaypartNameN() + ":");
-        System.out.println(dayF.getNarrativeN());
-        System.out.println("Rain: " + dayF.getPrecipChanceN() +"% / Inches: " + dayF.getQpfN());
-        System.out.println("Snow: " + dayF.getQpfSnowN() + " inches."); 
-        System.out.println("Cloud cover: " + dayF.getCloudCoverN() + "%");
-        System.out.println("Heat Index: " + dayF.getTemperatureHeatIndexN() +
-                "F / Wind Chill: " + dayF.getTemperatureWindChillN() + "F");
-        System.out.println("Wind: " + dayF.getWindPhraseN());          
-        System.out.println("\n\n");
-    return null;
+   
     
-    }
-    
-    public static void main(String[] args) {
-
-        
-        CallWUAPI WuAPI = new CallWUAPI();
-        ArrayList<FiveDayForecast> forecast = new ArrayList<FiveDayForecast>();
-        
-        String jsonResponse;
-        try {
-            jsonResponse = WuAPI.makeAPICall();
-            forecast = WuAPI.parse5DayJSON(jsonResponse);   
-            
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
+//    public static void main(String[] args) {
+//
+//        
+//        CallWUAPI WuAPI = new CallWUAPI();
+//        ArrayList<FiveDayForecast> forecast = new ArrayList<FiveDayForecast>();
+//        
+//        String jsonResponse;
+//        try {
+//            jsonResponse = WuAPI.makeAPICall();
+//            forecast = WuAPI.parse5DayJSON(jsonResponse);   
+//            
+//        } catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        } catch (JSONException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//    }
 
 }

@@ -13,6 +13,8 @@ public class UserInterface {
     private jsonIO jIO = new jsonIO();
     private CallWUAPI callWU = new CallWUAPI();
     private NWSWeatherWebservice callNWS = new NWSWeatherWebservice();
+    private FiveDayForecast fiveDay4cast = new FiveDayForecast();
+    private ASCIIArt art = new ASCIIArt();
     //private location loc = new location();
     
  
@@ -110,6 +112,14 @@ public class UserInterface {
                     + "\napplication and the Locations lists are located in the same directory structure.");
             
             /// GO TO createNewList 
+            // ******************************** Temporary ********************************
+            
+            System.out.println("This part is still under contruction! "
+                    + "\nIf you see this, please add the .json files to a sub-fold named: Saved Searches");
+            art.notYet();
+
+         // ******************************** Temporary ********************************
+            
         }
         /*
          *  If there are potential location lists, a pretty print list is presented along with the option
@@ -150,22 +160,43 @@ public class UserInterface {
                 System.out.println(System.lineSeparator().repeat(50)); // poor-man screen clear
                 System.out.println("\nYou selected --> " + numSelection + ". " + selectedFile);
                 
-                validCheck = 1;
                 
-                // GO TO: useExistingList
+                this.useExistingList(selectedFile);
+                
+                validCheck = 1;
+                               
                 
             } else if (initSelection.toLowerCase().equals("n")) {
-                System.out.println("Selected 'N' for New");
-                validCheck = 1; // switched to '1' to exit while loop
+                System.out.println("\nSelected 'N' for New");
                 
                 // GO TO: create new Location List method
+                
+                // ******************************** Temporary ********************************
+                
+                System.out.println("\n This part is still under contruction! Select a List. Bye now!!");
+                art.notYet();
+                
+                
+             // ******************************** Temporary ********************************
+                
+                validCheck = 1; // switched to '1' to exit while loop
+                
+                
 
             } else if (initSelection.toLowerCase().equals("e")) {
                 System.out.println("Selected 'E' for Edit");
-                validCheck = 1; // switched to '1' to exit while loop
+                
                 
                 // GO TO: edit existing Location List method
+                
+                // ******************************** Temporary ********************************
+                
+                System.out.println("This part is still under contruction!");
+                art.notYet();
 
+             // ******************************** Temporary ********************************
+                validCheck = 1; // switched to '1' to exit while loop
+                
             } else {
                 
                 /*
@@ -178,25 +209,30 @@ public class UserInterface {
                         + "\n'N' to create a new list, or 'E' to edit your list: ");
                 initSelection = scan.next();
             }
-            
-            System.out.println("\n\n**Out of While Loop!!**");
+            // TEST PRINT
+            //System.out.println("\n\n**Out of While Loop!!**");
         }
     }
     
     /**
-     * Method to handle when user input is to use an existing Location List
+     * Method to handle when user input is to use an existing Location List. <br>
+     * Runs each of the locations within the selected Location List json, through both APIs. <br>
+     * Prints out the location and a general narrative of the forecast for each day.
+     * @param filename (String) - filename of json file contain Location List
+     * @return (HashMap) - Key = Location with prefix <br>  Key prefixes: WU_ - WeatherUndergroud & NWS_ - National Weather Service <p>
+     * Value = ArrayList of FiveDayForecast - for the location and weather service indicated by Key
      */
-    public void useExistingList(String filename) {
+    public HashMap<String, ArrayList<FiveDayForecast>> useExistingList(String filename) {
         ArrayList<location> locsArray = jIO.fileReader(filename);
         System.out.println("\n\nLet's get the forecasts for your locations in <" + filename + ">\n");
-        
-        /*
-         * Create HashMap to store the multiple location forecasts from WUnderground.
-         * For the first weather service, a message is displayed to show the locations and coordinates
-         */
-        
+
+        // Create HashMap to store the multiple location forecasts from WUnderground.
+        // For the first weather service, a message is displayed to show the locations and coordinates
         HashMap<String, ArrayList<FiveDayForecast>> forecastsHMap = new HashMap<String, ArrayList<FiveDayForecast>>();
         
+        // Iterates through each location in the Location List and runs it through each API.
+        // Each location is surrounded (top & bottom) by a row of stars
+        // For each location the weather service is named with a  starred row
         int num = 1;
         for (location location : locsArray) {
             System.out.print("**************************************************************************************");
@@ -204,35 +240,57 @@ public class UserInterface {
             System.out.println("At a latitude/longitude of " + location.getLatitude() + "/" + location.getLongitude());
             System.out.println("**************************************************************************************\n");
             
+            // Both API calls have been set to take in a String parameter of comma separated latitude and longitude. Ex. "39.717,-104.9"
             String latLong = location.getLatitude() + "," + location.getLongitude(); // puts latitude and longitude into String
             
+            // WEATHERUNDERGROUND FORECAST 
+                // This part handles calling the WUnderground API for each of the location and displaying a narrative.
+                // Try/Catch used to handle if API call fails for any reason. Prints out a message indicated there was issue with call.
             try {
                 // WEATHERUNDERGROUND
+                System.out.println("*************** WUnderground ***************");
                 String jsonRecd = callWU.makeAPICall(latLong);
                 String key = "WU_" + location.getDisplayName();
                 ArrayList<FiveDayForecast> value = callWU.parse5DayJSON(jsonRecd);
-                                
+
                 forecastsHMap.put(key, value);
-                
-                // NATIONAL WEATHER SERVICE
-                String key2 = "NWS_" + location.getDisplayName();
-                ArrayList<FiveDayForecast> value2 = callNWS.getNWSForecast(latLong);
-                                
-                forecastsHMap.put(key2, value2);
-                
-                
+
+                // PRINTS NARRATIVE
+                for (int i = 0; i < value.size(); i++) {
+                    fiveDay4cast.weatherNarrative(value.get(i)); 
+                }
+
             } catch (IOException e) {
-                System.out.println("There was an issue calling to forecast for <" + location.getDisplayName() + ">.");
-                e.printStackTrace();
+                System.out.println("There was an issue calling the WUnderground forecast for <" + location.getDisplayName() + ">.");
+                //e.printStackTrace();
             }
+
+
+            // NATIONAL WEATHER SERVICE
+            System.out.println("*************** National Weather Service ***************");
+            String key2 = "NWS_" + location.getDisplayName();
+            ArrayList<FiveDayForecast> value2 = callNWS.getNWSForecast(latLong);
+
+            if (value2 == null) {
+                System.out.println("There was an issue calling the National Weather Service forecast for <" + location.getDisplayName() + ">.");
+            } else {
+
+                forecastsHMap.put(key2, value2);
+
+                // PRINTS NARRATIVE
+                for (int i = 0; i < value2.size(); i++) {
+                    fiveDay4cast.weatherNarrative(value2.get(i));  
+                }
+
+            }
+
             num++;
+
         }
-        
-        
-        
-        
+        return forecastsHMap;
+
     }
-    
+
 
     
     /**
@@ -285,17 +343,6 @@ public class UserInterface {
 
     }
     
-    public static void main(String[] args) {
-        UserInterface ui = new UserInterface();
-        ui.welcome(); // runs welcome messages
-        ui.selection(); // runs the selection method
-        
-//        ui.filesInDir(); // for testing .filesInDir method
 
-//        ui.numString(4); // for testing .numString method
-        
-        ui.useExistingList("weather.json");
-        
-    }
 
 }

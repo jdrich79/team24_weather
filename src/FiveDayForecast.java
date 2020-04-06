@@ -65,6 +65,56 @@ public class FiveDayForecast {
         this.windPhraseD = windPhraseD;
         this.windPhraseN = windPhraseN;
     }
+ 
+    /**
+     * Takes in the FiveDayForecast object and prints out a narrative of the collected 
+     * data points, in a human readable display.
+     * @param dayF (FiveDayForecast) - Take in an instance
+     */
+ public void weatherNarrative (FiveDayForecast dayF) {  
+        
+        System.out.println("The forecast for " + dayF.getDayOfWeek() + ", " + dayF.getDate() + " is:");
+        System.out.println(dayF.getNarrative());
+
+        if (dayF.getTemperatureMax() == 989) { 
+            // 989 value assigned to catch Null values and to display different message.
+            System.out.println("Low for today is: " + dayF.getTemperatureMin() + " F");
+        } else {
+            System.out.println("Today's High is " + dayF.getTemperatureMax() +
+                    " F and Low is " + dayF.getTemperatureMin() + "F");
+            System.out.println("\nThe Day and Evening forecasts:\n");
+        }
+        
+        // PART DAY FORECASTS
+
+        if (!dayF.getDaypartNameD().equals("XX")) {
+            // "XX" value assigned to catch Null values and to display a different message
+            System.out.println(dayF.getDaypartNameD() + ":");
+            System.out.println(dayF.getNarrativeD());
+            System.out.println("Rain: " + dayF.getPrecipChanceD() +"% / Inches: " + dayF.getQpfD());
+            
+            String snowRange = ""; // To a blank snowRange something to display
+            System.out.println("Snow: " + dayF.getQpfSnowD() + " inches. With a range of " 
+                    + snowRange);
+            
+            System.out.println("Cloud cover: " + dayF.getCloudCoverD() + "%");
+            System.out.println("Heat Index: " + dayF.getTemperatureHeatIndexD() + 
+                    "F / Wind Chill: " + dayF.getTemperatureWindChillD() + "F");
+            System.out.println("Wind: " + dayF.getWindPhraseD());
+        }
+        System.out.println();
+        System.out.println(dayF.getDaypartNameN() + ":");
+        System.out.println(dayF.getNarrativeN());
+        System.out.println("Rain: " + dayF.getPrecipChanceN() +"% / Inches: " + dayF.getQpfN());
+        System.out.println("Snow: " + dayF.getQpfSnowN() + " inches."); 
+        System.out.println("Cloud cover: " + dayF.getCloudCoverN() + "%");
+        System.out.println("Heat Index: " + dayF.getTemperatureHeatIndexN() +
+                "F / Wind Chill: " + dayF.getTemperatureWindChillN() + "F");
+        System.out.println("Wind: " + dayF.getWindPhraseN());          
+        System.out.println("\n\n");
+
+    
+    }
 
     public String getDate() {
         return date;
