@@ -70,7 +70,7 @@ public class Activity {
 	}
 
 	/**
-	 * selectActivity allows you to set the parameters for the chosen activity. This method does not return anything/ 
+	 * selectActivity sets the parameters for the chosen activity. This method does not return anything.
 	 * @param activity
 	 */
 	public void selectActivity(String activity) {
