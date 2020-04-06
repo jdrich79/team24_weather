@@ -1,9 +1,11 @@
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.nio.channels.UnresolvedAddressException;
 import java.time.Duration;
 import java.util.ArrayList;
 
@@ -52,10 +54,14 @@ public class NWSWeatherWebservice {
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("NWS Webservice Unavailable");
+			return null;
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (UnresolvedAddressException e) {
+			System.out.println("NWS webservice unavailable");
+			return null;
 		}
 		
 		
@@ -96,11 +102,14 @@ public class NWSWeatherWebservice {
 			weatherData = parseWeather.parseNWSForecast(forecastResponse.body(), forecastGridDataResponse.body());
 				
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("NWS webservice unavailable");
+			return null;
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (UnresolvedAddressException e) {
+			System.out.println("NWS webservice unavailable");
+			return null;
 		}
 		
 		return weatherData;
