@@ -25,10 +25,13 @@ public class FiveDayForecast {
     private Integer temperatureWindChillN;
     private String windPhraseD;
     private String windPhraseN;
+    private Double average;
     
     
 
-    public FiveDayForecast() {
+
+
+	public FiveDayForecast() {
         
     }
     
@@ -64,6 +67,7 @@ public class FiveDayForecast {
         this.temperatureWindChillN = temperatureWindChillN;
         this.windPhraseD = windPhraseD;
         this.windPhraseN = windPhraseN;
+        this.average = 0.0;
     }
  
     /**
@@ -208,7 +212,13 @@ public class FiveDayForecast {
         return windPhraseN;
     }
 
+    public Double getAverage() {
+		return average;
+	}
 
+	public void setAverage(Double average) {
+		this.average = average;
+	}
  
 }
 
