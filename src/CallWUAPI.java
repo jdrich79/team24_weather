@@ -70,12 +70,12 @@ public class CallWUAPI {
     
     /**
      * 
-     * Method to parse the Weather Underground JSON response string into the FiveDayForecast Class
+     * Method to parse the Weather Underground JSON response string into the DailyForecast Class
      * @param jsonResponse
      * @return
      * @throws JSONException
      */
-    public ArrayList<FiveDayForecast> parse5DayJSON(String jsonResponse) throws JSONException {
+    public ArrayList<DailyForecast> parse5DayJSON(String jsonResponse) throws JSONException {
       //create a JSON object with the String response
         JSONObject jObj = new JSONObject(jsonResponse);
         
@@ -112,13 +112,13 @@ public class CallWUAPI {
        
         
         /*
-         * Begin the building of the ArrayList 'forecasts' of 'FiveDayForecast' objects
+         * Begin the building of the ArrayList 'forecasts' of 'DailyForecast' objects
          */
-        ArrayList<FiveDayForecast> forecasts = new ArrayList<FiveDayForecast>();
+        ArrayList<DailyForecast> forecasts = new ArrayList<DailyForecast>();
         
         /*
          * Once a day data points are iterated through and set to variables
-         * with a basic for loop, to be feed into 'FiveDayForecast' constructor
+         * with a basic for loop, to be feed into 'DailyForecast' constructor
          */
         
         for(int i = 0; i < jADayWeek.length(); i++) {
@@ -177,7 +177,7 @@ public class CallWUAPI {
              * value, a regular For Loop does not work properly.
              * To get the data into the right days, this series of 
              * If/Else statement were used to get the data into the 
-             * correct days 'FiveDayForecast' object
+             * correct days 'DailyForecast' object
              */
             if (i == 0) {
                 // 'daypartName' can have a null value at [0]
@@ -371,7 +371,7 @@ public class CallWUAPI {
                 windPhN = jAWindPhrase.getString(10);
             }
 
-            FiveDayForecast fdf = new FiveDayForecast(date, dow, nar, tMax, tMin,
+            DailyForecast fdf = new DailyForecast(date, dow, nar, tMax, tMin,
                     dayPrtD, dayPrtN, narrDay, narrNight, precipD, precipN, cloudD, cloudN,
                     precipTypeD, precipTypeN, qpfD, qpfN, snowD, snowN, 
                     heatIdxD, heatIdxN, windChlD, windChlN, windPhD, windPhN);
@@ -391,7 +391,7 @@ public class CallWUAPI {
 //
 //        
 //        CallWUAPI WuAPI = new CallWUAPI();
-//        ArrayList<FiveDayForecast> forecast = new ArrayList<FiveDayForecast>();
+//        ArrayList<DailyForecast> forecast = new ArrayList<DailyForecast>();
 //        
 //        String jsonResponse;
 //        try {

@@ -13,7 +13,7 @@ public class UserInterface {
     private jsonIO jIO = new jsonIO();
     private CallWUAPI callWU = new CallWUAPI();
     private NWSWeatherWebservice callNWS = new NWSWeatherWebservice();
-    private FiveDayForecast fiveDay4cast = new FiveDayForecast();
+    private DailyForecast fiveDay4cast = new DailyForecast();
     private ASCIIArt art = new ASCIIArt();
     //private location loc = new location();
     
@@ -220,15 +220,15 @@ public class UserInterface {
      * Prints out the location and a general narrative of the forecast for each day.
      * @param filename (String) - filename of json file contain Location List
      * @return (HashMap) - Key = Location with prefix <br>  Key prefixes: WU_ - WeatherUndergroud & NWS_ - National Weather Service <p>
-     * Value = ArrayList of FiveDayForecast - for the location and weather service indicated by Key
+     * Value = ArrayList of DailyForecast - for the location and weather service indicated by Key
      */
-    public HashMap<String, ArrayList<FiveDayForecast>> useExistingList(String filename) {
+    public HashMap<String, ArrayList<DailyForecast>> useExistingList(String filename) {
         ArrayList<location> locsArray = jIO.fileReader(filename);
         System.out.println("\n\nLet's get the forecasts for your locations in <" + filename + ">\n");
 
         // Create HashMap to store the multiple location forecasts from WUnderground.
         // For the first weather service, a message is displayed to show the locations and coordinates
-        HashMap<String, ArrayList<FiveDayForecast>> forecastsHMap = new HashMap<String, ArrayList<FiveDayForecast>>();
+        HashMap<String, ArrayList<DailyForecast>> forecastsHMap = new HashMap<String, ArrayList<DailyForecast>>();
         
         // Iterates through each location in the Location List and runs it through each API.
         // Each location is surrounded (top & bottom) by a row of stars
@@ -251,7 +251,7 @@ public class UserInterface {
                 System.out.println("*************** WUnderground ***************");
                 String jsonRecd = callWU.makeAPICall(latLong);
                 String key = "WU_" + location.getDisplayName();
-                ArrayList<FiveDayForecast> value = callWU.parse5DayJSON(jsonRecd);
+                ArrayList<DailyForecast> value = callWU.parse5DayJSON(jsonRecd);
 
                 forecastsHMap.put(key, value);
 
@@ -269,7 +269,7 @@ public class UserInterface {
             // NATIONAL WEATHER SERVICE
             System.out.println("*************** National Weather Service ***************");
             String key2 = "NWS_" + location.getDisplayName();
-            ArrayList<FiveDayForecast> value2 = callNWS.getNWSForecast(latLong);
+            ArrayList<DailyForecast> value2 = callNWS.getNWSForecast(latLong);
 
             if (value2 == null) {
                 System.out.println("There was an issue calling the National Weather Service forecast for <" + location.getDisplayName() + ">.");

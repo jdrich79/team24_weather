@@ -1,5 +1,5 @@
 
-public class FiveDayForecast{
+public class DailyForecast{
 	private String date;
 	private String dayOfWeek;
 	private String narrative;
@@ -31,11 +31,11 @@ public class FiveDayForecast{
 
 
 
-	public FiveDayForecast() {
+	public DailyForecast() {
 
 	}
 
-	public FiveDayForecast(String date, String dayOfWeek, String narrative, Integer temperatureMax, 
+	public DailyForecast(String date, String dayOfWeek, String narrative, Integer temperatureMax, 
 			Integer temperatureMin, String daypartNameD, String daypartNameN, String narrativeD, 
 			String narrativeN, Integer precipChanceD, Integer precipChanceN, Integer cloudCoverD, 
 			Integer cloudCoverN, String precipTypeD, String precipTypeN, Double qpfD, Double qpfN,
@@ -73,11 +73,11 @@ public class FiveDayForecast{
 
 
 	/**
-	 * Takes in the FiveDayForecast object and prints out a narrative of the collected 
+	 * Takes in the DailyForecast object and prints out a narrative of the collected 
 	 * data points, in a human readable display.
-	 * @param dayF (FiveDayForecast) - Take in an instance
+	 * @param dayF (DailyForecast) - Take in an instance
 	 */
-	public void weatherNarrative (FiveDayForecast dayF) {  
+	public void weatherNarrative (DailyForecast dayF) {  
 
 		System.out.println("The forecast for " + dayF.getDayOfWeek() + ", " + dayF.getDate() + " is:");
 		System.out.println(dayF.getNarrative());

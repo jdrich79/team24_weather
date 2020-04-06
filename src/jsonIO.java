@@ -157,11 +157,11 @@ public class jsonIO {
 	 * @param forecastGridDataResponseBody
 	 * @return
 	 */
-	public ArrayList<FiveDayForecast> parseNWSForecast(String forecastResponseBody, String forecastGridDataResponseBody){
+	public ArrayList<DailyForecast> parseNWSForecast(String forecastResponseBody, String forecastGridDataResponseBody){
 		
 		JSONObject forecastObject = new JSONObject(forecastResponseBody);
 		JSONObject forecastGridDataObject = new JSONObject(forecastGridDataResponseBody);
-		ArrayList<FiveDayForecast> weatherData = new ArrayList<FiveDayForecast>();
+		ArrayList<DailyForecast> weatherData = new ArrayList<DailyForecast>();
 		JSONArray array = forecastObject.getJSONObject("properties").getJSONArray("periods");
 		
 	
@@ -179,7 +179,7 @@ public class jsonIO {
 			LocalDate dateTwo = startTimeTwo.toLocalDate();
 			
 			/*for the first day or if the start date of the current object is the same as the next object
-			 * create a FiveDayForecast object and add it to the arraylist
+			 * create a DailyForecast object and add it to the arraylist
 			 * 
 			 */
 			if (i == 0 || date.equals(dateTwo)) {
@@ -235,7 +235,7 @@ public class jsonIO {
 					narrativePm = c.getString("detailedForecast");
 					namePm = c.getString("name");
 					
-					FiveDayForecast tempWeather = new FiveDayForecast(date.toString(), date.getDayOfWeek().toString(), b.getString("detailedForecast"),  
+					DailyForecast tempWeather = new DailyForecast(date.toString(), date.getDayOfWeek().toString(), b.getString("detailedForecast"),  
 							(int)Math.round(highTemp), (int)Math.round(lowTemp), nameAm, namePm, narrativeAm, narrativePm, precipProbAm, precipProbPm, 
 							cloudCoverAm, cloudCoverPm,	"XX", "XX", precipAmountAm, precipAmountPm, snowfallAm, snowfallPm, (int)Math.round(heatIndexAm), 
 							(int)Math.round(heatIndexPm),(int)Math.round(windChillAm), (int)Math.round(windChillPm), windPhraseAm, windPhrasePm);
@@ -244,7 +244,7 @@ public class jsonIO {
 					
 				}
 				/*if the dates are not equal it means we are in the first object and there is
-				 * no AM forecast for the time period this was called and the FiveDayForecast should be setup as such
+				 * no AM forecast for the time period this was called and the DailyForecast should be setup as such
 				 */
 				else {
 					//Typically in this case the highTemp already occurred before the start time so we should knock that back to get it 
@@ -253,7 +253,7 @@ public class jsonIO {
 					Double lowTemp = (parseForecastGridData(forecastGridDataObject, startTimeOne, endTimeOne, "minTemperature", 1) * 9.0 / 5.0) + 32;
 
 					//call the fivedayforecast but with the "AM" values (i.e. the first object) in the PM spot
-					FiveDayForecast tempWeather = new FiveDayForecast(date.toString(), date.getDayOfWeek().toString(), b.getString("detailedForecast"),
+					DailyForecast tempWeather = new DailyForecast(date.toString(), date.getDayOfWeek().toString(), b.getString("detailedForecast"),
 							(int)Math.round(highTemp), (int)Math.round(lowTemp), namePm, nameAm, narrativePm, narrativeAm, precipProbPm, precipProbAm, 
 							cloudCoverPm, cloudCoverAm, "XX", "XX", precipAmountPm, precipAmountAm, snowfallPm, snowfallAm, (int)Math.round(heatIndexPm), 
 							(int)Math.round(heatIndexAm),(int)Math.round(windChillPm), (int)Math.round(windChillAm), windPhrasePm, windPhraseAm); //25

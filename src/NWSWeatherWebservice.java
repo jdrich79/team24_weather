@@ -75,7 +75,7 @@ public class NWSWeatherWebservice {
 	 * @return
 	 */
 	
-	public ArrayList<FiveDayForecast> getNWSForecast(String coordinates){
+	public ArrayList<DailyForecast> getNWSForecast(String coordinates){
 		//make call to prescribed URL location
 		ArrayList<String> url = getNWSGridLocation(coordinates);
 		//System.out.println(url);
@@ -85,7 +85,7 @@ public class NWSWeatherWebservice {
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest requestForecast = HttpRequest.newBuilder().uri(URI.create(url.get(0))).timeout(Duration.ofSeconds(5)).build();
 		HttpRequest requestForecastGridData = HttpRequest.newBuilder().uri(URI.create(url.get(1))).timeout(Duration.ofSeconds(5)).build();
-		ArrayList<FiveDayForecast> weatherData = new ArrayList<FiveDayForecast>();
+		ArrayList<DailyForecast> weatherData = new ArrayList<DailyForecast>();
 		jsonIO parseWeather = new jsonIO();
 		
 		try {

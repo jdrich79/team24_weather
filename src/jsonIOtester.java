@@ -6950,7 +6950,7 @@ class jsonIOtester {
 				"}";
 				
 		jsonIO jio = new jsonIO();
-		ArrayList<FiveDayForecast> fivedays = jio.parseNWSForecast(forecastResponseBody, forecastGridDataResponseBody);
+		ArrayList<DailyForecast> fivedays = jio.parseNWSForecast(forecastResponseBody, forecastGridDataResponseBody);
 		
 		assertEquals(fivedays.get(0).getDayOfWeek(),"WEDNESDAY");
 		assertEquals(fivedays.get(1).getDayOfWeek(),"THURSDAY");

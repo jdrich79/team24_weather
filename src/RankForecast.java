@@ -8,21 +8,21 @@ import java.util.Collections;
  *
  */
 public class RankForecast {
-	private ArrayList<FiveDayForecast> weatherList = new ArrayList<FiveDayForecast>();
+	private ArrayList<DailyForecast> weatherList = new ArrayList<DailyForecast>();
 	private Activity activity = new Activity();
 
-	public ArrayList<FiveDayForecast> getRankedList() {
+	public ArrayList<DailyForecast> getRankedList() {
 		return weatherList;
 	}
 
-	public RankForecast(ArrayList<FiveDayForecast> weatherList, Activity activity) {
+	public RankForecast(ArrayList<DailyForecast> weatherList, Activity activity) {
 		this.weatherList = weatherList;
 		this.activity = activity;
 	}
 
-	public ArrayList<FiveDayForecast> rankItems(){
+	public ArrayList<DailyForecast> rankItems(){
 		
-		ArrayList<FiveDayForecast> rankedList = new ArrayList<FiveDayForecast>();
+		ArrayList<DailyForecast> rankedList = new ArrayList<DailyForecast>();
 		Integer diffTemperatureMax;
 		Integer diffTemperatureMin;
 
@@ -38,7 +38,7 @@ public class RankForecast {
 		Double dayAverage = 0.0;
 		Double lowAverage = 0.0;
 
-		for(FiveDayForecast day: this.weatherList) {
+		for(DailyForecast day: this.weatherList) {
 			diffTemperatureMax = Math.abs(day.getTemperatureMax() - activity.getBestTemperatureMax());
 			diffTemperatureMin = Math.abs(day.getTemperatureMin() - activity.getBestTemperatureMin());
 

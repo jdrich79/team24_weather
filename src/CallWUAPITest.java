@@ -562,7 +562,7 @@ class CallWUAPITest {
     void testParse5DayJSON() {
         CallWUAPI testJSON = new CallWUAPI();
         try {
-            ArrayList<FiveDayForecast> forecast = testJSON.parse5DayJSON(jsonTestResponse);
+            ArrayList<DailyForecast> forecast = testJSON.parse5DayJSON(jsonTestResponse);
             
             ArrayList<String> daysOfWeek = new ArrayList<String>();
             ArrayList<String> date = new ArrayList<String>();
@@ -573,7 +573,7 @@ class CallWUAPITest {
             ArrayList<String> dayPrtN = new ArrayList<String>();
             
             for (int i = 0; i < forecast.size(); i++) {
-                FiveDayForecast day = forecast.get(i);
+                DailyForecast day = forecast.get(i);
                 
                 String dateString = day.getDate();
                 date.add(dateString);
