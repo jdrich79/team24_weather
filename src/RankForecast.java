@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import java.util.Collections;
 /**
  * This class is responsible for knowing forecasts, knowing activities, and ranking days/times by chosen activities
  * It collaborates with the Activity, WeatherUndergroundAPI, and NWSAPI class
@@ -20,7 +21,8 @@ public class RankForecast {
 	}
 
 	public ArrayList<FiveDayForecast> rankItems(){
-
+		
+		ArrayList<FiveDayForecast> rankedList = new ArrayList<FiveDayForecast>();
 		Integer diffTemperatureMax;
 		Integer diffTemperatureMin;
 
@@ -50,11 +52,11 @@ public class RankForecast {
 			//diffWindPhrase = Math.abs(day.getWindPhraseD() - activity.getBestWindPhrase());
 			
 			dayAverage = (diffTemperatureMax + diffTemperatureMin + diffPrecipChance + diffCloudCover + diffQpf + diffQpfSnow + diffTemperatureHeatIndex + diffTemperatureWindChill) / 8;
-			if (dayAverage < lowAverage) {
-				
-			}
+			day.setAverage(dayAverage);
+			rankedList.add(day);
 		}
-
+		
+		
 		return rankedList;
 	}
 
