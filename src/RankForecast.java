@@ -8,16 +8,15 @@ import java.util.ArrayList;
  */
 public class RankForecast {
 	private ArrayList<String> rankedList = new ArrayList<String>();
+	private Activity activity = new Activity();
 	
 	public ArrayList<String> getRankedList() {
 		return rankedList;
 	}
 	
-	public RankForecast(ArrayList<String> weatherList) {
+	public RankForecast(ArrayList<String> weatherList, Activity activity) {
 		this.rankedList = weatherList;
+		this.activity = activity;
 	}
-
-	
-	
 	
 }
