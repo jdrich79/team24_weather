@@ -6,61 +6,86 @@
  *
  */
 public class Activity {
-	private int bestIndex;
-	private double bestHighTemp;
-	private double bestLowTemp;
-	private String temperatureUnit;
-	private String bestWindSpeed;
-	private String windDirection;
-	private String icon;
-	private String shortForecast;
-	private String longForecast;
-	private double bestProbabilityOfPrecip;
-	private double bestAmountOfPrecip;
+    private Integer bestTemperatureMax;
+    private Integer bestTemperatureMin;
+    
+    // day part
+    private Integer bestPrecipChance;
+    private Integer bestCloudCover;
+    private Double bestQpf;
+    private Double bestQpfSnow;
+    private Integer bestTemperatureHeatIndex;
+    private Integer bestTemperatureWindChill;
+    private String bestWindPhrase;
 	
 	public void sailing() {
-		this.bestHighTemp = 75;
-		this.bestLowTemp = 65;
-		//knots? mph?
-		this.bestWindSpeed = 13;
-		this.bestProbabilityOfPrecip = 0;
-		this.bestAmountOfPrecip = 0;
+	   this.bestTemperatureMax = 75;
+	   this.bestTemperatureMin = 65;
+	    
+	    // day part
+	    this.bestPrecipChance = 0;
+	    this.bestCloudCover = 3;
+	    this.bestQpf = 0.0;
+	    this.bestQpfSnow = 0.0;
+	    this.bestTemperatureHeatIndex = 78;
+	    this.bestTemperatureWindChill = 77;
+	    this.bestWindPhrase = "";
 	}
 	
 	public void hiking() {
-		this.bestHighTemp = 75;
-		this.bestLowTemp = 65;
-		//knots? mph?
-		this.bestWindSpeed = 13;
-		this.bestProbabilityOfPrecip = 0;
-		this.bestAmountOfPrecip = 0;
+		   this.bestTemperatureMax = 68;
+		   this.bestTemperatureMin = 60;
+		    
+		    // day part
+		    this.bestPrecipChance = 0;
+		    this.bestCloudCover = 4;
+		    this.bestQpf = 0.0;
+		    this.bestQpfSnow = 0.0;
+		    this.bestTemperatureHeatIndex = 70;
+		    this.bestTemperatureWindChill = 70;
+		    this.bestWindPhrase = "";
 	}
 	
 	public void climbing() {
-		this.bestHighTemp = 75;
-		this.bestLowTemp = 65;
-		//knots? mph?
-		this.bestWindSpeed = 13;
-		this.bestProbabilityOfPrecip = 0;
-		this.bestAmountOfPrecip = 0;
+		   this.bestTemperatureMax = 72;
+		   this.bestTemperatureMin = 65;
+		    
+		    // day part
+		    this.bestPrecipChance = 0;
+		    this.bestCloudCover = 1;
+		    this.bestQpf = 0.0;
+		    this.bestQpfSnow = 0.0;
+		    this.bestTemperatureHeatIndex = 74;
+		    this.bestTemperatureWindChill = 73;
+		    this.bestWindPhrase = "";
 	}
 	
 	public void skiing() {
-		this.bestHighTemp = 75;
-		this.bestLowTemp = 65;
-		//knots? mph?
-		this.bestWindSpeed = 13;
-		this.bestProbabilityOfPrecip = 0;
-		this.bestAmountOfPrecip = 0;
+		   this.bestTemperatureMax = 25;
+		   this.bestTemperatureMin = 20;
+		    
+		    // day part
+		    this.bestPrecipChance = 0;
+		    this.bestCloudCover = 3;
+		    this.bestQpf = 0.0;
+		    this.bestQpfSnow = 0.25;
+		    this.bestTemperatureHeatIndex = 25;
+		    this.bestTemperatureWindChill = 25;
+		    this.bestWindPhrase = "";
 	}
 	
 	public void biking() {
-		this.bestHighTemp = 75;
-		this.bestLowTemp = 65;
-		//knots? mph?
-		this.bestWindSpeed = 13;
-		this.bestProbabilityOfPrecip = 0;
-		this.bestAmountOfPrecip = 0;
+		   this.bestTemperatureMax = 72;
+		   this.bestTemperatureMin = 65;
+		    
+		    // day part
+		    this.bestPrecipChance = 0;
+		    this.bestCloudCover = 3;
+		    this.bestQpf = 0.0;
+		    this.bestQpfSnow = 0.0;
+		    this.bestTemperatureHeatIndex = 74;
+		    this.bestTemperatureWindChill = 72;
+		    this.bestWindPhrase = "";
 	}
 	
 }
