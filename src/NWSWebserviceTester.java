@@ -49,6 +49,8 @@ class NWSWebserviceTester {
 		assertEquals(today.plusDays(1).toString(), forecast2.get(1).getDate());
 		assertEquals(today.plusDays(1).toString(), forecast3.get(1).getDate());
 		
+		System.out.println(forecast1.get(0).getNarrativeN());
+		
 		assertEquals(null, forecast4);
 		
 	}

@@ -152,7 +152,7 @@ public class jsonIO {
 	
 	/**
 	 * A public class that parses the forecast for the NWS API taking in the responses of the 
-	 * two pieces of forecast data APIs. Returns an arraylist of FiveDayForecasts
+	 * two pieces of forecast data APIs. Returns an arraylist of Forecasts
 	 * @param forecastResponseBody
 	 * @param forecastGridDataResponseBody
 	 * @return
